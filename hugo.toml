@@ -1,0 +1,21 @@
+baseURL = 'https://rajkoz.com/'
+languageCode = 'en-us'
+title = ''
+theme = 'PaperMod'
+
+[params]
+  defaultTheme = "light"
+  showShareButtons = false
+  showReadingTime = false
+  showPostNavLinks = false
+  showBreadCrumbs = false
+  showCodeCopyButtons = true
+  showToc = false
+  comments = false
+  disableThemeToggle = false
+
+# Syntax highlighting
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false

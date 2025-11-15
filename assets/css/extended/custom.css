@@ -1,0 +1,58 @@
+/* Hide footer completely */
+.footer {
+    display: none;
+}
+
+/* Social icons in header */
+.social-icons-header a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    padding: 0;
+}
+
+.social-icons-header a:hover {
+    opacity: 1;
+}
+
+.social-icons-header svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Theme toggle positioning */
+#theme-toggle {
+    margin-right: 20px;
+}
+
+/* Consistent white background for light theme only */
+[data-theme="light"] {
+    --theme: rgb(255, 255, 255);
+    --entry: rgb(255, 255, 255);
+}
+
+[data-theme="light"] .main,
+[data-theme="light"] body,
+[data-theme="light"] .list {
+    background: rgb(255, 255, 255);
+}
+
+/* Dark theme - slightly brighter for reading */
+[data-theme="dark"] {
+    --theme: rgb(24, 24, 27);
+    --entry: rgb(24, 24, 27);
+}
+
+[data-theme="dark"] .main,
+[data-theme="dark"] body,
+[data-theme="dark"] .list {
+    background: rgb(24, 24, 27);
+}
+
+/* Bigger titles on homepage */
+.archive-entry-title {
+    font-size: 1.5rem !important;
+}
+
