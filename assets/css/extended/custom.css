@@ -22,9 +22,27 @@
     height: 18px;
 }
 
-/* Theme toggle positioning */
+/* Theme toggle in menu */
+#menu li:has(#theme-toggle) {
+    display: flex;
+    align-items: center;
+}
+
 #theme-toggle {
-    margin-right: 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+#theme-toggle:hover {
+    opacity: 1;
 }
 
 /* Consistent white background for light theme only */
