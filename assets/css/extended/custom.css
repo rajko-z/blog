@@ -74,3 +74,37 @@
     font-size: 1.5rem !important;
 }
 
+/* Responsive images */
+.responsive-image {
+    margin: 2rem auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.responsive-image img {
+    display: block;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.responsive-image figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--secondary);
+    font-style: italic;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+    .responsive-image img {
+        width: 95% !important;
+        max-width: 95% !important;
+    }
+    
+    .responsive-image {
+        margin: 1.5rem auto;
+    }
+}
