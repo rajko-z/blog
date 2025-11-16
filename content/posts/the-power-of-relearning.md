@@ -1,6 +1,6 @@
 ---
 title: "The power of relearning"
-date: 2024-11-15
+date: 2024-11-16
 draft: false
 ---
 
