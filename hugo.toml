@@ -4,6 +4,8 @@ title = ''
 theme = 'PaperMod'
 
 [params]
+  # Prev/next for `layout: book` (see layouts/partials/book_series_nav.html)
+  bookSeriesRoot = "/posts/fluid-vault-smart-contracts-deep-dive"
   defaultTheme = "light"
   showShareButtons = false
   showReadingTime = false

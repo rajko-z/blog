@@ -1,0 +1,18 @@
+{{- $current := .current }}
+{{- $node := .node }}
+{{- /* Merge leaf pages and subsections, then sort by weight so folders can sit between pages. */ -}}
+<ul class="book-nav-list">
+  {{- $items := $node.RegularPages | append $node.Sections }}
+  {{- range sort $items "Weight" "asc" }}
+  {{- if .IsSection }}
+  <li class="book-nav-group">
+    <a class="book-nav-link book-nav-section{{ if or (eq $current.RelPermalink .RelPermalink) (.IsAncestor $current) }} is-active{{ end }}" href="{{ .RelPermalink }}">{{ .Title }}</a>
+    {{- partial "book_nav_node.html" (dict "node" . "current" $current) }}
+  </li>
+  {{- else }}
+  <li>
+    <a class="book-nav-link{{ if eq $current.RelPermalink .RelPermalink }} is-active{{ end }}" href="{{ .RelPermalink }}">{{ .Title }}</a>
+  </li>
+  {{- end }}
+  {{- end }}
+</ul>

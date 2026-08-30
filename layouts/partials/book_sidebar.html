@@ -1,0 +1,9 @@
+{{- $rootPath := site.Params.bookSeriesRoot | default "/posts/fluid-vault-smart-contracts-deep-dive" }}
+{{- $root := site.GetPage $rootPath }}
+{{- if not $root }}{{ return }}{{ end }}
+<aside class="book-sidebar" aria-label="Book contents">
+  <div class="book-sidebar-panel">
+    <a class="book-sidebar-title book-nav-link{{ if eq $.RelPermalink $root.RelPermalink }} is-active{{ end }}" href="{{ $root.RelPermalink }}">{{ $root.Title }}</a>
+    {{- partial "book_nav_node.html" (dict "node" $root "current" .) }}
+  </div>
+</aside>

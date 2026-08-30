@@ -1,0 +1,46 @@
+{{- if .Param "disableBookSeriesNav" }}{{ return }}{{ end }}
+{{- $rootPath := site.Params.bookSeriesRoot | default "/posts/fluid-vault-smart-contracts-deep-dive" }}
+{{- $root := site.GetPage $rootPath }}
+{{- if not $root }}{{ return }}{{ end }}
+{{- /* Hugo append: append ELEMENT … SLICE (slice is last). */ -}}
+{{- $scratch := newScratch }}
+{{- $empty := slice }}
+{{- $scratch.Set "pages" (append $root $empty) }}
+{{- partial "book_flatten_recursive.html" (dict "node" $root "scratch" $scratch) }}
+{{- $pages := $scratch.Get "pages" }}
+{{- $current := . }}
+{{- $idxScratch := newScratch }}
+{{- $idxScratch.Set "idx" -1 }}
+{{- range $i, $p := $pages }}
+  {{- if eq $p.RelPermalink $current.RelPermalink }}
+    {{- $idxScratch.Set "idx" $i }}
+  {{- end }}
+{{- end }}
+{{- $idx := $idxScratch.Get "idx" }}
+{{- if lt $idx 0 }}{{ return }}{{ end }}
+{{- $prev := false }}
+{{- if gt $idx 0 }}
+  {{- $prev = index $pages (sub $idx 1) }}
+{{- end }}
+{{- $next := false }}
+{{- if lt $idx (sub (len $pages) 1) }}
+  {{- $next = index $pages (add $idx 1) }}
+{{- end }}
+<nav class="book-series-nav" aria-label="Series">
+  <div class="book-series-nav__cell book-series-nav__cell--prev">
+    {{- if $prev }}
+    <a class="book-series-nav__link" href="{{ $prev.RelPermalink }}" rel="prev">
+      <span class="book-series-nav__arrow" aria-hidden="true">←</span>
+      <span class="book-series-nav__label">{{ $prev.Title }}</span>
+    </a>
+    {{- end }}
+  </div>
+  <div class="book-series-nav__cell book-series-nav__cell--next">
+    {{- if $next }}
+    <a class="book-series-nav__link" href="{{ $next.RelPermalink }}" rel="next">
+      <span class="book-series-nav__label">{{ $next.Title }}</span>
+      <span class="book-series-nav__arrow" aria-hidden="true">→</span>
+    </a>
+    {{- end }}
+  </div>
+</nav>
