@@ -11,7 +11,7 @@ Before we analyze, let's quickly revisit some of the things we covered earlier [
 
 Remember that `supplyRatio` and `borrowRatio` always stay below 100% and represent the ratio between interest and interest-free supplying or borrowing.
 
-```
+```text
 if supplyInterestFree > supplyWithInterest
     supplyRatio = supplyWithInterest / supplyInterestFree
 else
@@ -20,7 +20,7 @@ else
 
 or
 
-```
+```text
 if borrowInterestFree > borrowWithInterest
     borrowRatio = borrowWithInterest / borrowInterestFree
 else
@@ -100,7 +100,7 @@ There are 4 cases:
 - 1. `supplyWithInterest > supplyInterestFree` -> Store `supplyInterestFree/supplyWithInterest` and leave first bit to `0`.
 
 Example:
-```
+```text
 supplyWithInterest = 80
 supplyInterestFree = 20
 ratio = 20 / 80 = 25% = 2500
@@ -110,7 +110,7 @@ encoded value = 2500 << 1 = 5000
 - 2. `supplyInterestFree > supplyWithInterest` -> Store  `supplyWithInterest/supplyInterestFree` and set first bit to `1`.
   
 Example:
-```
+```text
 supplyWithInterest = 20
 supplyInterestFree = 80
 ratio = 20 / 80 = 25% = 2500
@@ -286,7 +286,7 @@ if (utilization_ > X14) {
 
 After that, we write to storage new values for:
 
-```
+```text
 - borrow rate
 - utilization
 - update time

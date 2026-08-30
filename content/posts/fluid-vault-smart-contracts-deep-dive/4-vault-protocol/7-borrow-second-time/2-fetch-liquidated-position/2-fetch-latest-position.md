@@ -187,13 +187,13 @@ Imagine that in our example on the previous page, only Alice's position is left 
 
 Now, if Alice calls the `operate` function and gets assigned to a new tick that is active and part of a new branch on top of `N`, the debt of branch `N` would be:
 
-```
+```text
 5.760k - 5.760k = 0
 ```
 
 Now we have a state of a liquidated branch that is the base branch of branch `N+1`, but also has debt of `0`. This means that the debt factor of this branch `N` would be `0`. If the debt factor is zero, then the connection factor from branch `N+1` loses its purpose and it will also be zero:
 
-```
+```text
 connectionFactor = baseBranchFactor / childBranchFactor
 connectionFactor = 0 / childBranchFactor
 connectionFactor = 0
@@ -219,7 +219,7 @@ if (currentData_.debt < 100) {
 
 If we take `1 USDC` debt (6 token decimals), leaving `0.01%` of liquidity will produce:
 
-```
+```text
 1000000 * 0.01% = 100
 ```
 

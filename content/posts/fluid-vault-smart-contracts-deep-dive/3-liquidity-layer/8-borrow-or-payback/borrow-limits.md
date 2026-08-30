@@ -17,7 +17,7 @@ And one addition to this borrow limit is the hard cap value, which is the absolu
 
 Suppose Bob borrowed 50 units and maxed out his borrow limit at 50.
 
-```
+```text
 baseBorrowLimit = 20
 expandDuration = 200 seconds
 expandPercentage = 20%
@@ -29,7 +29,7 @@ immediatelyBorrowable = 50 - 50 = 0
 
 At this point he can't borrow more, but let's say he waits for an additional 100 seconds. After this, the new borrow limit becomes:
 
-```
+```text
 50 + 50 * 20% / 2 = 55 
 ```
 
@@ -37,7 +37,7 @@ Max expansion is 60, but because half of the time duration passed, Bob can borro
 
 The new state becomes:
 
-```
+```text
 baseBorrowLimit = 20
 expandDuration = 200 seconds
 expandPercentage = 20%
@@ -48,13 +48,13 @@ borrowLimit = 55
 
 Now let's say Bob waits for 200 seconds, allowing full expansion to pass, leaving `borrowLimit` at:
 
-```
+```text
 55 + 55 * 20% = 66
 ```
 
 This leaves Bob an additional 11 units to borrow (`66 - 55`), making the new state:
 
-```
+```text
 baseBorrowLimit = 20
 expandDuration = 200 seconds
 expandPercentage = 20%
@@ -65,19 +65,19 @@ borrowLimit = 66
 
 Now, finally, Bob waits again for 200 seconds, which allows full expansion to:
 
-```
+```text
 66 * 120% = 79.2
 ```
 
 But note that this value is now greater than the absolute cap of `70`, meaning Bob will be able to borrow only up to the hard cap:
 
-```
+```text
 70 - 66 = 4
 ```
 
 Leaving the final state as:
 
-```
+```text
 baseBorrowLimit = 20
 expandDuration = 200 seconds
 expandPercentage = 20%
@@ -240,20 +240,20 @@ But why?
 
 Suppose this is the state:
 
-```
+```text
 bobBorrow = 50
 currentBorrowLimit = 55
 ```
 
 And Bob performs the borrow of 5 units, making it:
 
-```
+```text
 new bobBorrow = 55
 ```
 
 Now the new fully expanded value would be (in this function called `borrowLimit`):
 
-```
+```text
 55 * 120% = 66
 ```
 
@@ -261,26 +261,26 @@ But because `55` is less than `66`, we keep `newBorrowLimit_`, which was already
 
 Now let's say after this that Bob wants to perform the repay. So we have this state:
 
-```
+```text
 bobBorrow = 55
 currentBorrowLimit = 55
 ```
 
 And Bob wants to repay `35` units, making the new debt:
 
-```
+```text
 55 - 35 = 20
 ```
 
 And new fully expanded value:
 
-```
+```text
 20 * 120% = 24
 ```
 
 If we decide to always keep the previously calculated current borrow limit (`newBorrowLimit_`), this would allow Bob to immediately borrow more:
 
-```
+```text
 55 - 20 = 35
 ```
 

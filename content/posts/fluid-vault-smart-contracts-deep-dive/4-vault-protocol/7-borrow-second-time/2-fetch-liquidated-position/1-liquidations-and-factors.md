@@ -24,7 +24,7 @@ Now imagine price starts to drop and liquidations start from `topTick`. In this 
 
 So, in our case, the first liquidation will ask how much debt should be liquidated from tick `A` so that collateral debt composition of that tick moves down to tick `B`. Let's call that `x`, so the formula would be roughly:
 
-```
+```text
 (debt - x) / (collateral - x * collateralPerDebt) = ratioB
 ```
 
@@ -63,7 +63,7 @@ In our example, Alice's position is the first one, so she starts from branch fac
 
 Calculating debt factor after one liquidation iteration is rather straightforward. We just need the initial factor and which percentage of tick debt is liquidated:
 
-```
+```text
 newFactor = oldFactor * remainingDebt / previousDebt
 newFactor = 1 * 13500 / 15000
 newFactor = 0.9
@@ -71,7 +71,7 @@ newFactor = 0.9
 
 If we just stopped liquidation here, our current branch would have final debt factor of `0.9` and retrieving Alice's debt would show us that 10% of the position got liquidated:
 
-```
+```text
 initialDebt * endBranchFactor / tickData[A].debtFactor
 15000 * 0.9 / 1 = 13500
 ```
@@ -84,19 +84,19 @@ We again ask the question: what is the amount of debt needed so we move to ratio
 
 Suppose the answer is `3916.667 USDC`, which would make remaining debt:
 
-```
+```text
 23500 - 3916.667 = 19583.333
 ```
 
 And new debt factor:
 
-```
+```text
 0.9 * 19583.333 / 23500 = 0.75
 ```
 
 Again, if we stop now, Bob's position debt would be retrieved as:
 
-```
+```text
 10000 * 0.75 / 0.9 = 8333.333
 ```
 
@@ -114,7 +114,7 @@ Suppose that the liquidator is only left with `8916.667` USDC after running the 
 
 So suppose we have some ratio **`R`** at the perfect tick, and ratio **`R-1`**, and liquidation stops at point **`X`** between these 2 ratios.
 
-```
+```text
 ratio(R)
 
      ● R
@@ -130,7 +130,7 @@ ratio(R-1)
 
 Fluid would store minima tick as:
 
-```
+```text
 minimaTick = (R-1) + ((R) - (R-1)) * partials
 ```
 
@@ -142,19 +142,19 @@ Now let's go back to debt factors and finish this iteration.
 
 Remaining debt will be:
 
-```
+```text
 44583.333 - 8916.667 = 35666.666
 ```
 
 and debt factor:
 
-```
+```text
 0.75 * 35666.666 / 44583.333 = 0.6
 ```
 
 So final accumulated debt factor from the branch after running liquidation loops is `0.6`:
 
-```
+```text
 1 * 0.9 * 0.83333 * 0.8 = 0.6
 ```
 
@@ -174,7 +174,7 @@ And branch `N` will store debt factor of `0.6` with minima tick at point `D`.
 
 If we want to see total amount liquidated and retrieve user positions after liquidation, ignoring `Eve` position which liquidation did not touch:
 
-```
+```text
 Positions before:
 -----------------
 Alice:      15k debt  
@@ -216,7 +216,7 @@ We are starting from the new `topTick` containing Felix's position, and we again
 
 Suppose the answer is `3.6k`, meaning:
 
-```
+```text
 remainingDebt = 18k - 3.6k = 14.4k
 newFactor = oldFactor * remainingDebt / previousDebt
 newFactor = 1 * 14.4 / 18 = 0.8
@@ -230,7 +230,7 @@ Note that at this point we touched tick `C` with entry factor of `0.8`, but Char
 
 So we have in storage:
 
-```
+```text
 tick C generation G
     Branch N
     debt factor 0.75
@@ -250,7 +250,7 @@ We look for the next liquidation point. We have 1 active tick sitting at E with 
 
 Let's say that answer is `9.15k`, meaning:
 
-```
+```text
 remainingDebt = 24.4k - 9.15k = 15.25k
 newFactor = oldFactor * remainingDebt / previousDebt
 newFactor = 0.8 * 15.25 / 24.4 = 0.5
@@ -258,7 +258,7 @@ newFactor = 0.8 * 15.25 / 24.4 = 0.5
 
 If we would retrieve positions from branch `N+1` now, we would get:
 
-```
+```text
 Positions before:
 -----------------
 Felix:      18k debt  
@@ -283,7 +283,7 @@ So if branch `N+1` is gone as merged, what happens to positions from the `N+1` b
 
 Let's see:
 
-```
+```text
 Felix:      18k * 0.6 / 1    = 10.8k
 Grace:      10k * 0.6 / 0.8  = 7.5k
 ```
@@ -294,27 +294,27 @@ To solve this problem, we want to connect positions from the child branch with t
 
 Connection factor is calculated as:
 
-```
+```text
 connectionFactor = baseBranchFactor / childBranchFactor
 ```
 
 For our case that would be:
 
-```
+```text
 connectionFactor = 0.6 / 0.5
 connectionFactor = 1.2
 ```
 
 So if we take the previous calculations:
 
-```
+```text
 Felix:      18k * 0.5 / 1    = 9k
 Grace:      10k * 0.5 / 0.8  = 6.25k
 ```
 
 and multiply by `connectionFactor / connectionFactor`, we would get:
 
-```
+```text
 Felix:
 18k * 0.5 * 0.6
 ---------------
@@ -349,7 +349,7 @@ We ask what is the next tick with debt, which is Eve's position in tick `E` now,
 
 Let's say to reach `E` we need `10.1833k` and the liquidator has that amount, so we calculate:
 
-```
+```text
 remainingDebt = 50.9167k - 10.1833k = 40.7334k
 newFactor = oldFactor * remainingDebt / previousDebt
 newFactor = 0.6 * 40.7334k / 50.9167k = 0.48
@@ -363,7 +363,7 @@ Now let's finish this second liquidation process, and let's say the liquidator h
 
 So we again calculate:
 
-```
+```text
 remainingDebt = 52.7334k - 10.5467k = 42.1867k
 newFactor = oldFactor * remainingDebt / previousDebt
 newFactor = 0.48 * 42.1867k / 52.7334k = 0.384
@@ -377,7 +377,7 @@ We end up with the final state:
 
 If we want to retrieve back all positions:
 
-```
+```text
 Positions before:
 -----------------
 Alice:      15k debt

@@ -23,7 +23,7 @@ Let's do a quick reminder where we are.
 
 Remember from [here]({{< ref "../../5-ticks-data-structures.md#tickhasdebt" >}}) that information about active ticks with debt will be stored in one bitmap that can be indexed. Conceptually, it can be visualized like this:
 
-```
+```text
 ...
 mapId =  2  -> ticks    512 ... 767
 mapId =  1  -> ticks    256 ... 511
@@ -35,7 +35,7 @@ mapId = -2  -> ticks   -512 ... -257
 
 If we take, for example, `mapId 2` with active ticks 522, 592 and 712, their offset and place in bitmap will be:
 
-```
+```text
 522 - 512 = 10
 592 - 512 = 80
 712 - 512 = 200

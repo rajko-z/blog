@@ -15,38 +15,38 @@ We can group it into 7 main parts labeled on the image, which we are going to an
 
 On the previous page, we analyzed withdrawal limits. So let's quickly recall it with one example.
 
-```
+```text
 bobSupply = 15
 expand = 20%
 ```
 
 Fully expanded withdrawal is:
 
-```
+```text
 15 * 80% = 12
 ```
 
 Meaning Bob can withdraw the maximum of once expand duration finishes:
 
-```
+```text
 15 - 12 = 3
 ```
 
 Now, let's say Bob comes and deposits `10` more units, making the new withdrawal flow:
 
-```
+```text
 25 * 80% = 20
 ```
 
 Meaning Bob can withdraw the maximum of:
 
-```
+```text
 25 - 20 = 5
 ```
 
 where withdrawal limit jumped `8` units from:
 
-```
+```text
 12 -> 20
 ```
 
@@ -56,7 +56,7 @@ This jump in withdrawal limit is called `decay amount`, and it can help as new t
 
 Let's say after this deposit Bob withdraws the maximum of 5 units, making the new state:
 
-```
+```text
 bobSupply = 20
 withdrawalLimit = 20
 fully expanded withdrawal is = 20 * 80% = 16
@@ -68,14 +68,14 @@ This is where `decay` becomes helpful. Instead of waiting for a new expand durat
 
 When Bob comes and withdraws 5 units, the new `withdrawalLimit` won't be pushed down to `20` (effectively blocking an immediate new withdrawal), but it would rather account for the previously stored decay amount:
 
-```
+```text
 temporaryWithdrawalLimit = 20 - 5 = 15
 decayAmount = 8 - 5 = 3
 ```
 
 Now because the expanded withdrawal is minimum of `16`, this `temporaryWithdrawalLimit` will be pushed back to `16`, and one unused unit pushed back to `decayAmount`, making the new final state:
 
-```
+```text
 bobSupply = 20
 withdrawalLimit = 16
 decayAmount = 4
@@ -88,7 +88,7 @@ As an experiment, if Bob immediately withdraws again in cycles, we get the follo
 
 State before:
 
-```
+```text
 bobSupply = 20
 withdrawalLimit = 16
 decayAmount = 4
@@ -97,20 +97,20 @@ immediately withdrawable = 20 - 16 = 4
 
 Bob withdraws 4, making:
 
-```
+```text
 temporaryWithdrawalLimit = 16 - 4 = 12
 decayAmount = 4 - 4 = 0
 ```
 
 Because max expansion is:
 
-```
+```text
 16 * 80% = 12.8
 ```
 
 the limit and decay amount get pushed back to final values, making the final state:
 
-```
+```text
 bobSupply = 16
 withdrawalLimit = 12.8
 decayAmount = 0.8
@@ -119,32 +119,32 @@ immediately withdrawable = 16 - 12.8 = 3.2
 
 Now Bob withdraws 3.2 again immediately.
 
-```
+```text
 newSupply = 16 - 3.2 = 12.8
 ```
 
 Only `0.8` decay is left, so the code consumed all of it:
 
-```
+```text
 temporaryWithdrawalLimit = 12.8 - 0.8 = 12
 decayAmount = 0
 ```
 
 The fully expanded limit for the new supply would be:
 
-```
+```text
 12.8 * 80% = 10.24
 ```
 
 But because decay amount can only push the existing limit down to `12`, it can't automatically push it down to the new expanded value (simply because we are only left with `0.8` value), so the new limit stays at:
 
-```
+```text
 withdrawalLimitAfter = 12
 ```
 
 Making the final state:
 
-```
+```text
 bobSupply = 12.8
 withdrawalLimit = 12
 decayAmount = 0
@@ -153,7 +153,7 @@ immediately withdrawable = 0.8
 
 Now, if Bob again withdraws this `0.8` immediately, we don't have `decayAmount` left, so the final state becomes:
 
-```
+```text
 bobSupply = 12
 withdrawalLimit = 12
 decayAmount = 0
@@ -164,7 +164,7 @@ Now finally, Bob has to wait for expansion for new withdrawable liquidity. **He 
 
 If we add all withdrawal values we got:
 
-```
+```text
 5 + 4 + 3.2 + 0.8 = 13
 ```
 
@@ -190,7 +190,7 @@ Let's say that Bob waited 2 minutes after he performed a deposit of `10` units. 
 
 Remaining decay would be calculated as:
 
-```
+```text
 8 × (1000 - 33) / 1000
 = 8 × 967 / 1000
 = 7.736
@@ -417,20 +417,20 @@ Remember that this was the case on the first withdrawal of `5` units after stori
 
 Bob was consuming `5` units, pushing the limit to:
 
-```
+```text
 withdrawalLimit = 20 - 5 = 15
 decayAmount = 8 - 5 = 3
 ```
 
 But the fully expanded value was:
 
-```
+```text
 20 * 80% = 16
 ```
 
 Meaning we had to take `1` unit and adjust the final state to:
 
-```
+```text
 withdrawalLimit = 16
 decayAmount = 4
 ```
@@ -540,13 +540,13 @@ We want to check the part with `checkDecayExpansion_`:
 
 This is exactly the case already discussed before in our example with Bob, where we initially pushed the limit below the fully expanded value, making:
 
-```
+```text
 withdrawLimitBefore_ = 15
 ```
 
 where the fully expanded value was:
 
-```
+```text
 withdrawLimitAfter_ = 16
 ```
 
@@ -566,7 +566,7 @@ If this new deposit automatically starts the `4.1M` decay amount, then this syst
 
 To prevent this, Fluid averages this so that the new duration left is calculated like:
 
-```
+```text
 duration = (40% * 1 hour * 4M + 100% * 1 hour * 0.1M) / (4M + 0.1M) = 1492s = 24.87 minutes
 ```
 
@@ -623,7 +623,7 @@ This is done to prevent the scenario where all newly deposited amount is treated
 
 This also creates a scenario where the fully expanded value can get lower than the base value, or in other words:
 
-```
+```text
 withdrawalLimitAfter < withdrawalLimitBefore
 ```
 

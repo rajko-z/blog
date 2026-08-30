@@ -11,7 +11,7 @@ On the previous page, we mentioned the concept of `maxTick`, but let's give one 
 
 Suppose we have the following setup:
 
-```
+```text
 Vault = ETH / USDC
 
 CF                    = 80%
@@ -31,7 +31,7 @@ Liquidation Penalty   = 5%
 
 Suppose we have position:
 
-```
+```text
 Before liquidation
 -------------------
 collateral value: 1020$
@@ -41,7 +41,7 @@ ltv = 88.23%
 
 As we are in the liquidation zone with 5% bonus, for `100 $` USDC debt repaid, the liquidator will get `105 $` worth of ETH collateral.
 
-```
+```text
 After liquidation
 ------------------
 collateral value: 915$
@@ -53,7 +53,7 @@ Although still in the liquidation zone, the position is healthier than before (`
 
 Now suppose that starting position is this:
 
-```
+```text
 Before liquidation
 -------------------
 collateral value: 1000$
@@ -63,7 +63,7 @@ ltv = 96%
 
 This position is part of the absorb zone, but let's naively try to apply the bonus factor:
 
-```
+```text
 After liquidation
 ------------------
 collateral value: 895$

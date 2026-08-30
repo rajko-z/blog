@@ -9,13 +9,13 @@ On the previous pages, we were ignoring ticks as we weren't dealing with debt, b
 
 If you are familiar with ticks from Uniswap V3, then the same thing ticks are for concentrated liquidity there, here they are for separating positions by their ratio.
 
-```
+```text
 ratio = 1.0015^tick
 ```
 
 Where ratio is:
 
-```
+```text
 ratio = debt / coll
 ```
 
@@ -41,7 +41,7 @@ Let's say Bob interacts with the ETH/USDC vault, depositing 1 ETH and borrowing 
 
 His ratio would be calculated as:
 
-```
+```text
 ratio = (1000 * 1e6) / (1 * 1e18) = 0.000000001
 ```
 
@@ -65,13 +65,13 @@ Immediately, there are a few questions we can ask from here:
 
 We can't store decimals in Solidity, that's why Fluid uses Q96 fixed-point arithmetic. Ratio from above would be stored as:
 
-```
+```text
 ratioX96 = 0.000000001 * 2^96
 ```
 
 This also means that the actual formula on the Solidity side will be used as:
 
-```
+```text
 ratioX96 = 1.0015^tick * 2^96
 ```
 
@@ -81,7 +81,7 @@ Q formats are not Fluid-specific, so we won't analyze them here, but for those i
 
 We have to have some meaningful distinction between user groups. So just like Uniswap V3 and price variation, Fluid uses 15 bps to represent the smallest relative change in ratio.
 
-```
+```text
 ratio[t + 1] / ratio[t] = 1.0015
 ```
 
@@ -93,7 +93,7 @@ If we increase the spacing, however, the difference between calculated decimal t
 
 Let's quickly run through examples for the formula above:
 
-```
+```text
 tick-1 -> ratio = 1.0015^(-1) = 0.9985022466300548
 tick0  -> ratio = 1.0015^0    = 1
 tick1  -> ratio = 1.0015^1    = 1.0015
@@ -102,7 +102,7 @@ tick2  -> ratio = 1.0015^2    = 1.0030022500000002
 
 Which matches the exact spacing of `1.0015`:
 
-```
+```text
 ratio[0] / ratio[-1] = 1 / 0.9985022466300548      = 1.0015
 ratio[1] / ratio[0]  = 1.0015 / 1                  = 1.0015
 ratio[2] / ratio[1]  = 1.0030022500000002 / 1.0015 = 1.0015
@@ -118,7 +118,7 @@ Well, it fits a large range of possible ratios. For example, look again at the f
 
 Here the tick is going faster in one direction because one token has 18 decimals and one has 6 decimals. But let's lower the debt even more:
 
-```
+```text
 1 ETH / 1000   USDC = 1e-9  -> tick ~ -13826
 1 ETH / 100    USDC = 1e-10 -> tick ~ -15362
 1 ETH / 10     USDC = 1e-11 -> tick ~ -16898
@@ -137,13 +137,13 @@ So we see that the difference between collateral and debt has to be so huge that
 
 The other reason is that these values can simplify implementation, as:
 
-```
+```text
 32767 = 2^15 - 1 = 0x7fff = 111111111111111₂
 ```
 
 If we look at the factors table and combine all values, we will get:
 
-```
+```text
 1 + 2 + 4 + ... + 16384 = 32767
 ```
 
@@ -153,7 +153,7 @@ These are exactly the same factors Fluid uses in its `TickMath` library:
 
 So for tick `13`, for example, instead of multiplying by 1.0015 thirteen times, we can decompose and use pre-calculated factors:
 
-```
+```text
 1.0015^13 = 1.0015^8 * 1.0015^4 * 1.0015^1
 ```
 
@@ -161,7 +161,7 @@ So for tick `13`, for example, instead of multiplying by 1.0015 thirteen times, 
 
 There is only one main question left to answer. We already mentioned in the first example that supplying 1 ETH and borrowing 1000 USDC would give ratio of:
 
-```
+```text
 -13825.869602414956
 ```
 
@@ -171,13 +171,13 @@ Riskier side is always one tick above. In this case, it's `-13825`.
 
 But now, debt is not `1000 USDC` anymore, it's slightly more:
 
-```
+```text
 debt = ratio * coll = 1.0015^(-13825) * 1e18 = 1001304276 ~ 1001.3 USDC
 ```
 
 So Fluid does not account this as automatic debt for the user, it rather stores this as `dustDebt`:
 
-```
+```text
 dustDebt ~ 1.3 USDC
 ```
 

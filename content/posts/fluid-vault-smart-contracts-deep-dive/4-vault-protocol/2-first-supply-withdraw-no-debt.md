@@ -219,7 +219,7 @@ This means that after 1 year, 100m supplied from the vault would be worth 110m.
 
 But, let's say that the actual supply rate on the vault side is 12%, 2% bigger than the liquidity layer. In this case, we have the following:
 
-```
+```text
 Liquidity gives the Vault effectively: 10%
 Vault promises its users:              12%
 
@@ -239,7 +239,7 @@ For now, all we need to know is that some external actor can rebalance the vault
 
 In this case, we would just pull an additional 2m from a special address which would cover the deficit by sending the deficit to the liquidity layer, making the after state:
 
-```
+```text
 Vault's actual position in Liquidity: 112M
 Vault users' accounting             : 112M
 ```

@@ -239,32 +239,32 @@ We are starting from some tick with some debt and we want to liquidate just enou
 
 This is the formula, as stated in comments:
 
-```
+```text
 (debt - x) / (coll - x * collPerDebt) = refRatio
 ```
 
 Multiply by `(coll - x * collPerDebt)` on both sides:
 
-```
+```text
 (debt - x) = refRatio * (coll - x * collPerDebt)
 (debt - x) = refRatio * coll - refRatio * x * collPerDebt
 ```
 
 Move `x` to one side:
 
-```
+```text
 refRatio * x * collPerDebt - x = refRatio * coll - debt
 ```
 
 Factor out:
 
-```
+```text
 x * (refRatio * collPerDebt - 1) = refRatio * coll - debt
 ```
 
 Get `x`:
 
-```
+```text
      refRatio * coll - debt
 x = ----------------------------
      refRatio * collPerDebt - 1
@@ -287,7 +287,7 @@ Both numerator and denominator are negative, which is quite well explained in co
 
 So we can multiply by `-1` and get:
 
-```
+```text
        debt - refRatio * coll
 x = ---------------------------
      1 - refRatio * collPerDebt
@@ -295,7 +295,7 @@ x = ---------------------------
 
 We know that `coll` is starting collateral that can be substituted with: `debt / ratioStart`:
 
-```
+```text
        debt - (refRatio * debt / ratioStart)
 x = -----------------------------------------
             1 - refRatio * collPerDebt
@@ -303,7 +303,7 @@ x = -----------------------------------------
 
 We can then multiply both sides with `1e27`:
 
-```
+```text
        1e27 * (debt - (refRatio * debt / ratioStart))
 x = ---------------------------------------------------
             1e27 * (1 - refRatio * collPerDebt)
@@ -311,13 +311,13 @@ x = ---------------------------------------------------
 
 Now if we just expand denominator:
 
-```
+```text
 1e27 * (1 - refRatio * collPerDebt) = 1e27 - 1e27 * refRatio * collPerDebt
 ```
 
 We know from before that `collPerDebt` is stored in `1e27` decimals and `refRatio` is stored in `Q96` representation, so we get:
 
-```
+```text
 1e27 - 1e27 * refRatio / Q96 * collPerDebt / 1e27
 =
 1e27 - collPerDebt * refRatio / Q96
@@ -325,7 +325,7 @@ We know from before that `collPerDebt` is stored in `1e27` decimals and `refRati
 
 Substituting this to final `x`:
 
-```
+```text
        (debt - (refRatio * debt / ratioStart))  * 1e27
 x = ---------------------------------------------------
             1e27 - collPerDebt * refRatio / Q96
@@ -416,7 +416,7 @@ If our next reference tick happens to be base branch minima tick, we hit merge e
 1. We first read base branch data along with base branch debt factor.
 2. After that we calculate connection factor as:
 
-```
+```text
 connectionFactor = baseBranchDebtFactor / currentBranchDebtFactor
 ```
 

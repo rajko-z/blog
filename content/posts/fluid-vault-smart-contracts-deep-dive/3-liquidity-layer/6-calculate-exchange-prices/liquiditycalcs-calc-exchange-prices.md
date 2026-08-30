@@ -35,7 +35,7 @@ Knowing this, we can start analyzing the function.
 
 We can see that the function can be divided into a few logical pieces:
 
-```
+```text
 1. Extraction of exchange prices
 2. Calculation of borrow exchange price
 3. Calculation of supply exchange price

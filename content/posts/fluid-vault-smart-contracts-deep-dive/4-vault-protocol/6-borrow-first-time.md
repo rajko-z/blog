@@ -114,7 +114,7 @@ We calculate the ratio by looking at current `netDebtRaw_` and `totalColRaw_`.
 
 If we remember our example from before, we were supplying 1 ETH and borrowing 1000 USDC, and we were getting to ratio:
 
-```
+```text
 ratio = (1000 * 1e6) / (1 * 1e18) = 0.000000001
 tick = math.log(1e-9, 1.0015) = -13825.869602414956
 ```
@@ -560,7 +560,7 @@ The price is scaled in `1e27 + debtTokenDecimals - collTokenDecimals`.
 
 If we have an `ETH / USDC` vault, and price `1 ETH = 2500 USDC`, we can expect oracle to return:
 
-```
+```text
 2500 * 10**(27 + 6 - 18) = 2500 * 1e15
 ```
 
@@ -572,7 +572,7 @@ This is exactly what Fluid is doing.
 
 We know from before:
 
-```
+```text
 actual collateral = collateralRaw * supplyExPrice / 1e12
 actual debt = debtRaw * borrowExPrice / 1e12
 ratio = debtRaw / collateralRaw
@@ -580,7 +580,7 @@ ratio = debtRaw / collateralRaw
 
 Because oracle is returning in actual token amounts, we need to convert that to raw value.
 
-```
+```text
 actual debt = actual collateral * PRICE / 1e27
 debtRaw * borrowExPrice / 1e12 = (collateralRaw * supplyExPrice / 1e12) * PRICE / 1e27
 debtRaw * borrowExPrice = collateralRaw * supplyExPrice * PRICE / 1e27
