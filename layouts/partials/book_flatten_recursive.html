@@ -1,0 +1,11 @@
+{{- /* Appends pages in sidebar order: leaf pages and sections interleaved by weight. */ -}}
+{{- $node := .node }}
+{{- $scratch := .scratch }}
+{{- $items := $node.RegularPages | append $node.Sections }}
+{{- range sort $items "Weight" "asc" }}
+  {{- $pages := $scratch.Get "pages" }}
+  {{- $scratch.Set "pages" (append . $pages) }}
+  {{- if .IsSection }}
+  {{- partial "book_flatten_recursive.html" (dict "node" . "scratch" $scratch) }}
+  {{- end }}
+{{- end }}

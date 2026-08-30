@@ -1,0 +1,19 @@
+<script>
+    window.addEventListener("pageshow", () => {
+        requestAnimationFrame(() => {
+            const sidebar = document.querySelector(".book-sidebar");
+            const activeLinks = sidebar?.querySelectorAll(".book-nav-link.is-active");
+
+            if (!sidebar || !activeLinks?.length || getComputedStyle(sidebar).overflowY !== "auto") {
+                return;
+            }
+
+            const activeLink = activeLinks[activeLinks.length - 1];
+            const sidebarRect = sidebar.getBoundingClientRect();
+            const activeRect = activeLink.getBoundingClientRect();
+
+            sidebar.scrollTop += activeRect.top - sidebarRect.top
+                - (sidebar.clientHeight - activeRect.height) / 2;
+        });
+    });
+</script>

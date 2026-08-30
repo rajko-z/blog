@@ -4,9 +4,18 @@
 {{/* Homepage - show simple list like archives */}}
 <div class="archive-year">
   <div class="archive-posts">
-    {{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+    {{- $main := site.Params.mainSections | default (slice "posts") }}
+    {{- $regular := where site.RegularPages "Type" "in" $main }}
+    {{- $regular = where $regular "Params.hiddenInHomeList" "ne" true }}
+    {{- $bookPath := site.Params.bookSeriesRoot | default "/posts/fluid-vault-smart-contracts-deep-dive" }}
+    {{- $book := site.GetPage $bookPath }}
+    {{- $pages := $regular }}
+    {{- if $book }}
+    {{- $pages = $regular | append $book }}
+    {{- end }}
+    {{- $pages = sort $pages "Date" "desc" }}
     {{- range $pages }}
-    {{- if eq .Kind "page" }}
+    {{- if or (eq .Kind "page") (eq .Kind "section") }}
     <div class="archive-entry">
       <h3 class="archive-entry-title entry-hint-parent">
         {{- .Title | markdownify }}
@@ -31,6 +40,9 @@
 
 {{- else }}
 {{/* Other list pages - default behavior */}}
+{{- if and (eq .Kind "section") (eq .Layout "book") }}
+{{- partial "book_page_main.html" . }}
+{{- else }}
 
 {{- if not .IsHome | and .Title }}
 <header class="page-header">
@@ -126,6 +138,8 @@
   </nav>
 </footer>
 {{- end }}
+
+{{- end }}{{/* end book vs default list */}}
 
 {{- end }}{{/* end if .IsHome */}}
 

@@ -45,6 +45,29 @@
     opacity: 1;
 }
 
+/* Markdown alerts, for example: > [!NOTE] */
+.post-content .alert {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--primary);
+    border-radius: var(--radius);
+    background: var(--code-bg);
+}
+
+.post-content .alert-note {
+    border-inline-start-color: #3b82f6;
+}
+
+.post-content .alert-title {
+    margin-bottom: 0.4rem;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.post-content .alert > :last-child {
+    margin-bottom: 0;
+}
+
 /* Consistent white background for light theme only */
 [data-theme="light"] {
     --theme: rgb(255, 255, 255);
@@ -106,5 +129,195 @@
     
     .responsive-image {
         margin: 1.5rem auto;
+    }
+}
+
+/* Book-style posts (layout: book): wider sidebar + wider article + generous gutter */
+:root {
+    --book-sidebar-width: 15.5rem;
+    --book-sidebar-gap: 2.25rem;
+    /* Target article width (~896px); capped in .book-main with min(..., 100%) */
+    --book-article-max-width: 56rem;
+}
+
+/* .main--book set in layouts/_default/baseof.html when layout: book (avoids :has() reflow) */
+.main.main--book {
+    max-width: min(
+        calc(var(--gap) * 2 + var(--book-sidebar-width) + var(--book-sidebar-gap) + var(--book-article-max-width)),
+        calc(100vw - 2rem)
+    );
+}
+
+.book-sidebar-panel {
+    display: block;
+}
+
+.book-layout {
+    display: flex;
+    gap: var(--book-sidebar-gap);
+    align-items: flex-start;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.book-sidebar {
+    flex: 0 0 var(--book-sidebar-width);
+    flex-shrink: 0;
+    width: var(--book-sidebar-width);
+    position: sticky;
+    top: 1rem;
+    align-self: flex-start;
+    max-height: calc(100vh - var(--header-height) - var(--gap) - 1rem);
+    max-height: calc(100dvh - var(--header-height) - var(--gap) - 1rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--tertiary) transparent;
+    padding-inline-end: 0.4rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.book-sidebar::-webkit-scrollbar {
+    width: 0.45rem;
+}
+
+.book-sidebar::-webkit-scrollbar-thumb {
+    background: var(--tertiary);
+    border: 0;
+    border-radius: var(--radius);
+}
+
+.book-sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+}
+
+.book-sidebar-title {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.75rem;
+    line-height: 1.35;
+}
+
+.book-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.book-nav-list .book-nav-list {
+    margin-left: 0.5rem;
+    margin-top: 0.25rem;
+    padding-left: 0.65rem;
+    border-left: 1px solid var(--border);
+}
+
+.book-nav-link {
+    display: block;
+    padding: 0.2rem 0;
+    color: var(--secondary);
+    text-decoration: none;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.book-nav-link:hover {
+    color: var(--primary);
+}
+
+.book-nav-link.is-active {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.book-nav-group {
+    margin-top: 0.35rem;
+}
+
+.book-main {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    max-width: min(var(--book-article-max-width), 100%);
+}
+
+/* Prev / next for layout: book — matches sidebar order (weight) */
+.book-series-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+}
+
+.book-series-nav__cell {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.book-series-nav__cell--prev {
+    text-align: left;
+}
+
+.book-series-nav__cell--next {
+    text-align: right;
+}
+
+.book-series-nav__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    max-width: 100%;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.35;
+}
+
+.book-series-nav__link:hover {
+    text-decoration: underline;
+}
+
+.book-series-nav__arrow {
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+
+.book-series-nav__label {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .main.main--book {
+        max-width: calc(var(--main-width) + var(--gap) * 2);
+    }
+
+    .book-layout {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .book-main {
+        max-width: 100%;
+    }
+
+    .book-sidebar {
+        flex: none;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+        padding-inline-end: 0;
+        width: 100%;
+    }
+
+    /* TOC stays visible after every navigation (do not use display:none + toggle — that hid the nav on each new page) */
+    .book-sidebar-panel {
+        display: block;
     }
 }
